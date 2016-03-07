@@ -23,8 +23,10 @@ var height = svg.height;
 //ctx.fillStyle = '#776E65';
 
 var makeSquare = function(i, j) {
-  var c = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  c.setAttribute('id', 'grid'+ toString(4*i+j));
-  c.setAttribute('x', );
-  c.setAttribute('y', j + 20);
+    var c = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    c.setAttribute('id', 'grid'+ toString(4*i+j));
+    c.setAttribute('x', 100*j + 20(j+1));
+    c.setAttribute('y', 100*i + 20*(i+1));
 }
+
+YO I THINK I GOT THE POSITION STUFF
