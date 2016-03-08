@@ -98,6 +98,8 @@ var moveUp = function() {
   console.log("up");
   for (var i=0; i<squares.length; i++) {
     for (var j=0; j<squares[i].length; j++) {
+      var stop = -1;
+      var collapse = false;
       // duplicate and reset squares
       var d = dupSquare(squares[i][j].getAttribute('value'),
 		        squares[i][j].getAttribute('x'),
@@ -106,13 +108,20 @@ var moveUp = function() {
       squares[i][j].setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value)]));
       // move duplicates
       if (i > 0) {
-	// check column in the rows above (need to fix)
-	var stop = 'something';
+	// check column in the rows above (NEED)
+	stop = 'something';
+	if ('something') {
+	  collapse = true;
+	}
       } else {
-	var stop = 20;
+	stop = 20;
       }
-      // delete duplicates and update new postitions
-      duplicate.parentNode.removeChild(duplicate);
+      while (d.getAttribute('y') > stop) {
+	d.setAttribute(d.getAttribute('y')-2);
+      }
+      // delete duplicates
+      d.parentNode.removeChild(d);
+      // update new square value (NEED)
     }
   }
 };
