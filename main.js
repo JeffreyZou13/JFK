@@ -3,20 +3,18 @@
 *  Array that stores the values of the squares, if it doesnt have a value, it's null and draw at gray square for that
 */
 
-
 //The following code sets up the screen with all the tiles to start the game
 var svg = document.getElementById('2048');
 var squares = new Array(4);
 var width = svg.width.animVal.value;
 var height = svg.height.animVal.value;
-console.log(width);
 //ctx.fillStyle = '#776E65';
 
 var makeSquare = function(i, j) {
   console.log('SQUARE');
   var c = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
   c.setAttribute('id', 'grid'+ (4*i+j).toString());
-  c.setAttribute('x', 120*i+20);
+  c.setAttribute('x', 120*i + 20);
   c.setAttribute('y', 120*j + 20);
   c.setAttribute('style', 'fill:#BBADA0');
   c.setAttribute('width', '100');
@@ -33,6 +31,9 @@ var makeBackground = function() {
   c.setAttribute('style', 'fill:#776E65');
   c.setAttribute('x', 0);
   c.setAttribute('y', 0);
+  //Round corners
+  c.setAttribute('rx', 5);
+  c.setAttribute('ry', 5);
   c.setAttribute('width', width.toString());
   c.setAttribute('height', height.toString());
   svg.appendChild(c);
@@ -55,8 +56,8 @@ var initialize = function() {
     if (v < 0.5) {
       squares[r][c].setAttribute('value','2');
       squares[r][c].setAttribute('style','fill:#eee4da');
-    } else {
       squares[r][c].setAttribute('value','4');
+    } else {
       squares[r][c].setAttribute('style','fill:#ede0c8');
     }
     x++;
