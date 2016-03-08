@@ -29,10 +29,10 @@ var makeSquare = function(i, j) {
 
 var dupSquare = function(value,x,y) {
   var c = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  c.setAttribute('id', 'temp'));
+  c.setAttribute('id', 'temp');
   c.setAttribute('x', x);
   c.setAttribute('y', y);
-  c.setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value)]));
+  c.setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value))]);
   c.setAttribute('width', '100');
   c.setAttribute('height', '100');
   c.setAttribute('value', 1);
@@ -104,8 +104,8 @@ var moveUp = function() {
       var d = dupSquare(squares[i][j].getAttribute('value'),
 		        squares[i][j].getAttribute('x'),
 		        squares[i][j].getAttribute('y'));
-      squares[i][j].setAttribute('value','1'));
-      squares[i][j].setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value)]));
+      squares[i][j].setAttribute('value','1');
+      squares[i][j].setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value))]);
       // move duplicates
       if (i > 0) {
 	// check column in the rows above (NEED)
