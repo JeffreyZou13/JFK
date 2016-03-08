@@ -12,19 +12,35 @@ var height = svg.height.animVal.value;
 console.log(width);
 //ctx.fillStyle = '#776E65';
 
+COLOR = ['bbada0', 'eee4da', 'ede0c8', 'f2b179', 'f59563', 'f67c5f',
+         'f65e3b', 'edcf72', 'edcc61', 'edc850', 'edc53f', 'edc22e' ];
+
 var makeSquare = function(i, j) {
   console.log('SQUARE');
   var c = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
   c.setAttribute('id', 'grid'+ (4*i+j).toString());
   c.setAttribute('x', 120*i+20);
   c.setAttribute('y', 120*j + 20);
-  c.setAttribute('style', 'fill:#BBADA0');
+  c.setAttribute('style', 'fill:#bbada0');
   c.setAttribute('width', '100');
   c.setAttribute('height', '100');
   c.setAttribute('value', 0);
   svg.appendChild(c);
   return c;
-}
+};
+
+var dupSquare = function(value,x,y) {
+  var c = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  c.setAttribute('id', 'temp'));
+  c.setAttribute('x', x);
+  c.setAttribute('y', y);
+  c.setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value)]));
+  c.setAttribute('width', '100');
+  c.setAttribute('height', '100');
+  c.setAttribute('value', 1);
+  svg.appendChild(c);
+  return c;
+};
 
 var makeBackground = function() {
   console.log('BACKGROUND');
@@ -36,13 +52,13 @@ var makeBackground = function() {
   c.setAttribute('width', width.toString());
   c.setAttribute('height', height.toString());
   svg.appendChild(c);
-}
+};
 
 var initialize = function() {
   makeBackground();
-  for (var i=0;i<squares.length;i++) {
+  for (var i=0; i<squares.length; i++) {
     squares[i] = new Array(4);
-    for (var j=0;j<squares[i].length;j++) {
+    for (var j=0; j<squares[i].length; j++) {
       squares[i][j] = makeSquare(i, j);
     }
   }
@@ -61,19 +77,44 @@ var initialize = function() {
     }
     x++;
   }
-}
+};
 
 var move = function(e) {
   if (e.keyCode == 38) { // up
     console.log("up");
+    for (var i=0; i<squares.length; i++) {
+      for (var j=0; j<squares[i].length; j++) {
+        // duplicate and reset squares
+	var d = dupSquare(squares[i][j].getAttribute('value'),
+		  squares[i][j].getAttribute('x'),
+		  squares[i][j].getAttribute('y'));
+	squares[i][j].setAttribute('value','1'));
+	squares[i][j].setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value)]));
+        // move duplicates
+	if (i > 0) {
+	  // check column in the rows above (need to fix)
+	  var stop = 'something';
+	} else {
+	  var stop = 20;
+        // delete duplicates and update new postitions
+	duplicate.parentNode.removeChild(duplicate);
+      }
+    }
   } else if (e.keyCode == 40) { // down
     console.log("down");
+    for (var i=squares.length-1; i>=0; i--) {
+      for (var j=0; j<squares[i].length; j++) {
+        // duplicate and reset squares
+        // move duplicates
+        // delete duplicates and update new postitions
+      }
+    }
   } else if (e.keyCode == 37) { // left
     console.log("left");
   } else if (e.keyCode == 39) { // down
     console.log("right");
   }
-}
+};
 
 initialize();
 
