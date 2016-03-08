@@ -95,7 +95,7 @@ var initialize = function() {
 };
 
 var moveUp = function() {
-  console.log("up");
+  console.log("UP");
   for (var i=0; i<squares.length; i++) {
     for (var j=0; j<squares[i].length; j++) {
       var stop = -1;
@@ -105,15 +105,22 @@ var moveUp = function() {
 		        squares[i][j].getAttribute('x'),
 		        squares[i][j].getAttribute('y'));
       squares[i][j].setAttribute('value','1');
-      squares[i][j].setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value))]);
+      //squares[i][j].setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value))]);
       // move duplicates
-      if (i > 0) {
+      if (j > 0) {
 	// check column in the rows above (NEED)
-
-  //squareAbove = squares[i][j-1]
+  squareAbove = squares[i][j-1];
   //if squareabove.value == d.value -> collpase = true
-  //else
-  //  if squareabove.value == 0 -> move up 
+  if (squareAbove.getAttribute('value') == d.getAttribute('value')) {
+    collapse = true;
+    console.log(d);
+    console.log(squareAbove);
+  }
+  else {
+    if (squareAbove.getAttribute('value') == 0) {
+      //lol
+    }
+  }
 	stop = 'something';
 	if ('something') {
 	  collapse = true;
@@ -122,7 +129,7 @@ var moveUp = function() {
 	stop = 20;
       }
       while (d.getAttribute('y') > stop) {
-	d.setAttribute(d.getAttribute('y')-2);
+	d.setAttribute('y', d.getAttribute('y')-2);
       }
       // delete duplicates
       d.parentNode.removeChild(d);
