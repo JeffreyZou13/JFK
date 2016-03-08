@@ -95,52 +95,60 @@ var initialize = function() {
 };
 
 var moveUp = function() {
-  for (var i=0;i<squares.length;i++) {
-    for (var j=0;j<squares.length;j++) {
-      var squareColumn = squares[i];
-      
+  console.log("up");
+  for (var i=0; i<squares.length; i++) {
+    for (var j=0; j<squares[i].length; j++) {
+      // duplicate and reset squares
+      var d = dupSquare(squares[i][j].getAttribute('value'),
+		        squares[i][j].getAttribute('x'),
+		        squares[i][j].getAttribute('y'));
+      squares[i][j].setAttribute('value','1'));
+      squares[i][j].setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value)]));
+      // move duplicates
+      if (i > 0) {
+	// check column in the rows above (need to fix)
+	var stop = 'something';
+      } else {
+	var stop = 20;
+      }
+      // delete duplicates and update new postitions
+      duplicate.parentNode.removeChild(duplicate);
     }
   }
+};
+
+var moveDown = function() {
+  console.log("down");
+  for (var i=squares.length-1; i>=0; i--) {
+    for (var j=0; j<squares[i].length; j++) {
+      // duplicate and reset squares
+      // move duplicates
+      // delete duplicates and update new postitions
+    }
+  }
+};
+
+var moveLeft = function() {
+  console.log("left");
+};
+
+var moveRight = function() {
+  console.log("right");
 };
 
 var move = function(e) {
   if (e.keyCode == 38) { // up
     e.preventDefault();
-    console.log("up");
-    for (var i=0; i<squares.length; i++) {
-      for (var j=0; j<squares[i].length; j++) {
-        // duplicate and reset squares
-	var d = dupSquare(squares[i][j].getAttribute('value'),
-		  squares[i][j].getAttribute('x'),
-		  squares[i][j].getAttribute('y'));
-	squares[i][j].setAttribute('value','1'));
-	squares[i][j].setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value)]));
-        // move duplicates
-	if (i > 0) {
-	  // check column in the rows above (need to fix)
-	  var stop = 'something';
-	} else {
-	  var stop = 20;
-        // delete duplicates and update new postitions
-	duplicate.parentNode.removeChild(duplicate);
-      }
-    }
+    moveUp();
   } else if (e.keyCode == 40) { // down
     e.preventDefault();
-    console.log("down");
-    for (var i=squares.length-1; i>=0; i--) {
-      for (var j=0; j<squares[i].length; j++) {
-        // duplicate and reset squares
-        // move duplicates
-        // delete duplicates and update new postitions
-      }
-    }
+    moveDown();
   } else if (e.keyCode == 37) { // left
     e.preventDefault();
-    console.log("left");
+    moveLeft();
   } else if (e.keyCode == 39) { // down
     e.preventDefault();
-    console.log("right");
+    moveRight();
   }
 };
 
