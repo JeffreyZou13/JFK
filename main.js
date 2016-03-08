@@ -76,20 +76,33 @@ var initialize = function() {
     squares[r2][c2].setAttribute('value','4');
     squares[r2][c2].setAttribute('style','fill:#ede0c8');
   }
-}
+};
+
+var moveUp = function() {
+  for (var i=0;i<squares.length;i++) {
+    for (var j=0;j<squares.length;j++) {
+      var squareColumn = squares[i];
+      
+    }
+  }
+};
 
 var move = function(e) {
   if (e.keyCode == 38) { // up
+    e.preventDefault();
     console.log("up");
   } else if (e.keyCode == 40) { // down
+    e.preventDefault();
     console.log("down");
   } else if (e.keyCode == 37) { // left
+    e.preventDefault();
     console.log("left");
   } else if (e.keyCode == 39) { // down
+    e.preventDefault();
     console.log("right");
   }
-}
+};
 
 initialize();
 
-window.addEventListener( "keydown", move, false )
+window.addEventListener( "keydown", move, false );
