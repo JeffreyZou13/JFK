@@ -48,19 +48,33 @@ var initialize = function() {
     }
   }
   //console.log(squares);
-  var x = 0;
-  while (x < 2) {
-    var r = Math.floor(Math.random()*(3-0)+0);
-    var c = Math.floor(Math.random()*(3-0)+0);
-    var v = Math.random();
-    if (v < 0.5) {
-      squares[r][c].setAttribute('value','2');
-      squares[r][c].setAttribute('style','fill:#eee4da');
-      squares[r][c].setAttribute('value','4');
-    } else {
-      squares[r][c].setAttribute('style','fill:#ede0c8');
-    }
-    x++;
+  //The two tiles must be distinct
+  var r1 = Math.floor(Math.random()*4);
+  var c1 = Math.floor(Math.random()*4);
+
+  var r2 = Math.floor(Math.random()*4);
+  var c2 = Math.floor(Math.random()*4);
+
+  if (r1 === r2 && c1 === c2) {
+    r2 = Math.floor(Math.random()*4);
+    c2 = Math.floor(Math.random()*4);
+  }
+  var v1 = Math.random();
+  if (v1 < 0.5) {
+    squares[r1][c1].setAttribute('value','2');
+    squares[r1][c1].setAttribute('style','fill:#eee4da');
+  } else {
+    squares[r1][c1].setAttribute('value','4');
+    squares[r1][c1].setAttribute('style','fill:#ede0c8');
+  }
+
+  var v2 = Math.random();
+  if (v2 < 0.5) {
+    squares[r2][c2].setAttribute('value','2');
+    squares[r2][c2].setAttribute('style','fill:#eee4da');
+  } else {
+    squares[r2][c2].setAttribute('value','4');
+    squares[r2][c2].setAttribute('style','fill:#ede0c8');
   }
 }
 
