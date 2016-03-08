@@ -109,6 +109,11 @@ var moveUp = function() {
       // move duplicates
       if (i > 0) {
 	// check column in the rows above (NEED)
+
+  //squareAbove = squares[i][j-1]
+  //if squareabove.value == d.value -> collpase = true
+  //else
+  //  if squareabove.value == 0 -> move up 
 	stop = 'something';
 	if ('something') {
 	  collapse = true;
