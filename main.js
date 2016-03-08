@@ -21,7 +21,9 @@ var makeSquare = function(i, j) {
   c.setAttribute('style', 'fill:#BBADA0');
   c.setAttribute('width', '100');
   c.setAttribute('height', '100');
+  c.setAttribute('value', 0);
   svg.appendChild(c);
+  return c;
 }
 
 var makeBackground = function() {
@@ -36,18 +38,43 @@ var makeBackground = function() {
   svg.appendChild(c);
 }
 
-
 var initialize = function() {
   makeBackground();
-
   for (var i=0;i<squares.length;i++) {
     squares[i] = new Array(4);
     for (var j=0;j<squares[i].length;j++) {
       squares[i][j] = makeSquare(i, j);
     }
   }
+  //console.log(squares);
+  var x = 0;
+  while (x < 2) {
+    var r = Math.floor(Math.random()*(3-0)+0);
+    var c = Math.floor(Math.random()*(3-0)+0);
+    var v = Math.random();
+    if (v < 0.5) {
+      squares[r][c].setAttribute('value','2');
+      squares[r][c].setAttribute('style','fill:#eee4da');
+    } else {
+      squares[r][c].setAttribute('value','4');
+      squares[r][c].setAttribute('style','fill:#ede0c8');
+    }
+    x++;
+  }
+}
 
-
+var move = function(e) {
+  if (e.keyCode == 38) { // up
+    console.log("up");
+  } else if (e.keyCode == 40) { // down
+    console.log("down");
+  } else if (e.keyCode == 37) { // left
+    console.log("left");
+  } else if (e.keyCode == 39) { // down
+    console.log("right");
+  }
 }
 
 initialize();
+
+window.addEventListener( "keydown", move, false )
