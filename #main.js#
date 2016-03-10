@@ -32,11 +32,10 @@ var dupSquare = function(value,x,y) {
   c.setAttribute('id', 'temp');
   c.setAttribute('x', x);
   c.setAttribute('y', y);
-  console.log(COLOR[parseInt(Math.log2(value))]);
   c.setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(value))]);
   c.setAttribute('width', '100');
   c.setAttribute('height', '100');
-  c.setAttribute('value', value);
+  c.setAttribute('value', 1);
   svg.appendChild(c);
   return c;
 };
@@ -98,11 +97,8 @@ var initialize = function() {
 var moveUp = function() {
   console.log("UP");
   for (var i=0; i<squares.length; i++) {
-    console.log(squares[i]);
     for (var j=0; j<squares[i].length; j++) {
-      console.log(squares[i][j]);
-      if (squares[i][j].getAttribute('value') != 1) {
-	console.log(squares[i][j]);
+      if (squares[i][j] != 1) {
         var stop = 20;
         var collapse = false;
         var square = squares[i][j];
@@ -114,7 +110,7 @@ var moveUp = function() {
         squares[i][j].setAttribute('value','1');
         squares[i][j].setAttribute('style', 'fill:#'+COLOR[parseInt(Math.log2(squares[i][j].getAttribute('value')))]);
         console.log(parseInt(Math.log2(squares[i][j].getAttribute('value'))));
-	console.log("i"+i+" j"+j);
+
         // check rows above
         if (i > 0) {
           console.log("stopp");
@@ -126,9 +122,9 @@ var moveUp = function() {
               cont = false;
               if (above.getAttribute('value') == d.getAttribute('value')) {
                 collapse = true;
-                stop = parseInt(above.getAttribute('y'));
+                stop = above.getAttribute('y');
               } else {
-                stop = parseInt(above.getAttribute('y')) - 120;
+                stop = above.getAttribute('y') + 120;
               }
             } else {
              k--;
@@ -136,20 +132,19 @@ var moveUp = function() {
           }   
           console.log(stop);
         }
-	console.log(stop);
+
         // move duplicates
         while (d.getAttribute('y') > stop) {
-          d.setAttribute('y', d.getAttribute('y')-2);
+          setTimeout(function(){d.setAttribute('y', d.getAttribute('y')-2);}, 1000);
         }
-	console.log(stop);
+
         // set the new values
         if (collapse) {
 
-        } if (stop != 20){
+        } else if (stop != 20){
 	  console.log(d);
           console.log(stop);
 	  console.log((stop-20)/120);
-       
           squares[(stop-20)/120][j].setAttribute('value', d.getAttribute('value'));
           squares[(stop-20)/120][j].setAttribute('style', d.getAttribute('style'));
         }
