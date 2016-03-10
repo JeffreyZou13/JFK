@@ -127,14 +127,19 @@ var moveUp = function() {
 		    k = i - 1;
 		    cont = true;
 		    while (cont) {
+                        console.log("cont "+stop);
+			if (k < 0) {
+			    stop = 20;
+			    break;
+			}
 			var above = squares[k][j];
-			if (above.getAttribute('value') != 0 || k == 0) {
+			if (above.getAttribute('value') != 1) {
 			    cont = false;
 			    if (above.getAttribute('value') == d.getAttribute('value')) {
 				collapse = true;
 				stop = parseInt(above.getAttribute('y'));
 			    } else {
-				stop = parseInt(above.getAttribute('y')) - 120;
+				stop = parseInt(above.getAttribute('y')) + 120;
 			    }
 			} else {
 			    k--;
@@ -152,14 +157,14 @@ var moveUp = function() {
 		// set the new values
 		if (collapse) {
 		    
-		} if (stop != 20){
+		} 
 		    console.log(d);
 		    console.log(stop);
 		    console.log((stop-20)/120);
 		    
 		    squares[(stop-20)/120][j].setAttribute('value', d.getAttribute('value'));
 		    squares[(stop-20)/120][j].setAttribute('style', d.getAttribute('style'));
-		}
+		
 		
 		// delete duplicates
 		d.parentNode.removeChild(d);
