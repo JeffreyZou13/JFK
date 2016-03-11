@@ -98,11 +98,8 @@ var initialize = function() {
 var moveUp = function() {
     console.log("UP");
     for (var i=0; i<squares.length; i++) {
-	//console.log(squares[i]);
 	for (var j=0; j<squares[i].length; j++) {
-	    //console.log(squares[i][j]);
 	    if (squares[i][j].getAttribute('value') != 1) {
-		console.log(squares[i][j]);
 		var stop = 20;
 		var collapse = false;
 		var square = squares[i][j];
@@ -112,22 +109,18 @@ var moveUp = function() {
 	  			  squares[i][j].getAttribute('x'),
 				  squares[i][j].getAttribute('y'));
 		squares[i][j].setAttribute('value','1');
-		//console.log(squares[i][j].getAttribute('value'));
-		//console.log(Math.log(squares[i][j].getAttribute('value'))/Math.log(squares[i][j].getAttribute('value')));
+
 		squares[i][j].
 		    setAttribute('style', 'fill:#'+
 				 COLOR[Math.log(parseInt(squares[i][j].
 							 getAttribute('value')))/
 				       Math.log(2)]);
-		//console.log(parseInt(Math.log2(squares[i][j].getAttribute('value'))));
-		console.log("i"+i+" j"+j);
+
 		// check rows above
 		if (i > 0) {
-		    console.log("stopp");
 		    k = i - 1;
 		    cont = true;
 		    while (cont) {
-                        console.log("cont "+stop);
 			if (k < 0) {
 			    stop = 20;
 			    break;
@@ -145,26 +138,23 @@ var moveUp = function() {
 			    k--;
 			}
 		    }   
-		    console.log(stop);
 		}
-		console.log(stop);
+
 		// move duplicates
 		while (d.getAttribute('y') > stop) {
 		    d.setAttribute('y', d.getAttribute('y')-2);
 		}
-		console.log(stop);
-		console.log(collapse);
 		// set the new values
 		if (collapse) {
-		    
-		} 
-		    console.log(d);
-		    console.log(stop);
-		    console.log((stop-20)/120);
-		    
+		    squares[(stop-20)/120][j].setAttribute('value', parseInt(d.getAttribute('value'))*2);
+		    squares[(stop-20)/120][j].setAttribute('style', 'fill:#'+
+				 COLOR[Math.log(parseInt(squares[(stop-20)/120][j].
+							 getAttribute('value')))/
+				       Math.log(2)]);
+		} else {
 		    squares[(stop-20)/120][j].setAttribute('value', d.getAttribute('value'));
 		    squares[(stop-20)/120][j].setAttribute('style', d.getAttribute('style'));
-		
+		}
 		
 		// delete duplicates
 		d.parentNode.removeChild(d);
@@ -174,12 +164,69 @@ var moveUp = function() {
 };
 
 var moveDown = function() {
-    console.log("down");
+    console.log("DOWN");
     for (var i=squares.length-1; i>=0; i--) {
 	for (var j=0; j<squares[i].length; j++) {
-	    // duplicate and reset squares
-	    // move duplicates
-	    // delete duplicates and update new postitions
+	    if (squares[i][j].getAttribute('value') != 1) {
+		var stop = 380;
+		var collapse = false;
+		var square = squares[i][j];
+
+		// duplicate and reset squares
+		var d = dupSquare(squares[i][j].getAttribute('value'),
+	  			  squares[i][j].getAttribute('x'),
+				  squares[i][j].getAttribute('y'));
+		squares[i][j].setAttribute('value','1');
+		squares[i][j].
+		    setAttribute('style', 'fill:#'+
+				 COLOR[Math.log(parseInt(squares[i][j].
+							 getAttribute('value')))/
+				       Math.log(2)]);
+
+		// check rows above
+		if (i < squares.length-1) {
+		    k = i + 1;
+		    cont = true;
+		    while (cont) {
+			if (k > squares.length-1) {
+			    stop = 380;
+			    break;
+			}
+			var below = squares[k][j];
+			if (below.getAttribute('value') != '1') {
+			    cont = false;
+			    if (below.getAttribute('value') == d.getAttribute('value')) {
+				collapse = true;
+				stop = parseInt(below.getAttribute('y'));
+			    } else {
+				stop = parseInt(below.getAttribute('y')) - 120;
+			    }
+			} else {
+			    k++;
+			}
+		    }   
+		}
+
+		// move duplicates
+		while (d.getAttribute('y') < stop) {
+		    d.setAttribute('y', d.getAttribute('y')+2);
+		}
+
+		// set the new values
+		if (collapse) {
+		    squares[(stop-20)/120][j].setAttribute('value', parseInt(d.getAttribute('value'))*2);
+		    squares[(stop-20)/120][j].setAttribute('style', 'fill:#'+
+				 COLOR[Math.log(parseInt(squares[(stop-20)/120][j].
+							 getAttribute('value')))/
+				       Math.log(2)]);
+		} else {
+		    squares[(stop-20)/120][j].setAttribute('value', d.getAttribute('value'));
+		    squares[(stop-20)/120][j].setAttribute('style', d.getAttribute('style'));
+		}
+		
+		// delete duplicates
+		d.parentNode.removeChild(d);
+	    }
 	}
     }
 };
