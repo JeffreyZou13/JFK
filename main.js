@@ -6,12 +6,25 @@
 //The following code sets up the screen with all the tiles to start the game
 var svg = document.getElementById('2048');
 var squares = new Array(4);
+var texts = new Array(4);
 var width = svg.width.animVal.value;
 var height = svg.height.animVal.value;
 //ctx.fillStyle = '#776E65';
 
 COLOR = ['bbada0', 'eee4da', 'ede0c8', 'f2b179', 'f59563', 'f67c5f',
-         'f65e3b', 'edcf72', 'edcc61', 'edc850', 'edc53f', 'edc22e' ];
+         'f65e3b', 'edcf72', 'edcc61', 'edc850', 'edc53f', 'edc22e', '000000', '000000' ];
+
+var makeText = function(i, j) {
+    var c = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    c.setAttribute('id', 'txt'+ (4*i+j).toString());
+    c.setAttribute('x', 120*j + 35);
+    c.setAttribute('y', 120*i + 87);
+    c.setAttribute('fill', '#ffffff');
+    c.setAttribute('font-size', '40');
+    c.textContent = '';
+    svg.appendChild(c);
+    return c;
+};
 
 var makeSquare = function(i, j) {
     console.log('SQUARE');
@@ -23,6 +36,8 @@ var makeSquare = function(i, j) {
     c.setAttribute('width', '100');
     c.setAttribute('height', '100');
     c.setAttribute('value', 1);
+    c.setAttribute('rx', 2);
+    c.setAttribute('ry', 2);
     svg.appendChild(c);
     return c;
 };
@@ -64,7 +79,12 @@ var initialize = function() {
 	    squares[i][j] = makeSquare(i, j);
 	}
     }
-
+    for (var i=0; i<texts.length; i++) {
+	texts[i] = new Array(4);
+	for (var j=0; j<texts[i].length; j++) {
+	    texts[i][j] = makeText(i, j);
+	}
+    }
     //The two tiles must be distinct
     var r1 = Math.floor(Math.random()*4);
     var c1 = Math.floor(Math.random()*4);
@@ -93,10 +113,27 @@ var initialize = function() {
 	squares[r2][c2].setAttribute('value','4');
 	squares[r2][c2].setAttribute('style','fill:#ede0c8');
     }
+
+    for (var i=0; i<squares.length; i++) {
+	for (var j=0; j<squares[i].length; j++) {
+	    var sq = squares[i][j];
+	    if (sq.getAttribute('value') != 1) {
+		texts[i][j].textContent = sq.getAttribute('value');
+		if (sq.getAttribute('value') <= 4) {
+		    texts[i][j].setAttribute('fill', '#000000');
+		} else {
+		    texts[i][j].setAttribute('fill', '#ffffff');
+		}
+	    } else {
+		texts[i][j].textContent = '';
+	    }
+	}
+    }
 };
 
 var moveUp = function() {
     console.log("UP");
+    var moved = false;
     for (var i=0; i<squares.length; i++) {
 	for (var j=0; j<squares[i].length; j++) {
 	    if (squares[i][j].getAttribute('value') != 1) {
@@ -136,21 +173,25 @@ var moveUp = function() {
 			    }
 			} else {
 			    k--;
+			    moved = true;
 			}
 		    }   
 		}
 
 		// move duplicates
-		//while (d.getAttribute('y') > stop) {
-		    //setTimeout(function(){d.setAttribute('y', d.getAttribute('y')-2);},10);
-		//}
+		while (d.getAttribute('y') > stop) {
+		    d.setAttribute('y', d.getAttribute('y')-2);
+		}
 
-		function slide(){
+		// tried making it slide but didn't work ;-;
+
+		/*function slide(){
 		    d.setAttribute('y', d.getAttribute('y')-0.1);
 		    if (d.getAttribute('y') > stop) {
 			setTimeout(slide, 500);
 		    }
-		}
+		}*/
+
 		// set the new values
 		if (collapse) {
 		    squares[(stop-20)/120][j].setAttribute('value', parseInt(d.getAttribute('value'))*2);
@@ -168,10 +209,12 @@ var moveUp = function() {
 	    }
 	}
     }
+    return moved;
 };
 
 var moveDown = function() {
     console.log("DOWN");
+    var moved = false;
     for (var i=squares.length-1; i>=0; i--) {
 	for (var j=0; j<squares[i].length; j++) {
 	    if (squares[i][j].getAttribute('value') != 1) {
@@ -210,6 +253,7 @@ var moveDown = function() {
 			    }
 			} else {
 			    k++;
+			    moved = true;
 			}
 		    }   
 		}
@@ -236,10 +280,12 @@ var moveDown = function() {
 	    }
 	}
     }
+    return moved;
 };
 
 var moveRight = function() {
     console.log("RIGHT");
+    var moved = false;
     for (var i=squares.length-1; i>=0; i--) {
 	for (var j=0; j<squares[i].length; j++) {
 	    if (squares[j][i].getAttribute('value') != '1') {
@@ -279,6 +325,7 @@ var moveRight = function() {
 			    }
 			} else {
 			    k++;
+			    moved = true;
 			}
 		    }   
 		}
@@ -304,10 +351,12 @@ var moveRight = function() {
 	    }
 	}
     }
+    return moved;
 };
 
 var moveLeft = function() {
     console.log("LEFT");
+    var moved = false;
     for (var i=0; i<squares.length; i++) {
 	for (var j=0; j<squares[i].length; j++) {
 	    if (squares[j][i].getAttribute('value') != '1') {
@@ -347,6 +396,7 @@ var moveLeft = function() {
 			    }
 			} else {
 			    k--;
+			    moved = true;
 			}
 		    }   
 		}
@@ -372,42 +422,66 @@ var moveLeft = function() {
 	    }
 	}
     }
+    return moved;
 };
 
 var move = function(e) {
+    var m;
     if (e.keyCode >= 37 && e.keyCode <= 41) {
+	// check which key was pressed and do movement
 	if (e.keyCode == 38) { // up
 	    e.preventDefault();
-	    moveUp();
+	    m=moveUp();
         } else if (e.keyCode == 40) { // down
 	    e.preventDefault();
-	    moveDown();
+	    m=moveDown();
         } else if (e.keyCode == 37) { // left
 	    e.preventDefault();
-    	    moveLeft();
+    	    m=moveLeft();
         } else if (e.keyCode == 39) { // down
 	    e.preventDefault();
-	    moveRight();
+	    m=moveRight();
         }
+	// make sure colors correspond to values
 	for (var i=0; i<squares.length; i++) {
 	    for (var j=0; j<squares[i].length; j++) {
 		squares[i][j].setAttribute('style', 'fill:#'+
-				 COLOR[Math.log(parseInt(squares[i][j].getAttribute('value')))/
+				 COLOR[Math.log(parseInt(squares[i][j].
+							getAttribute('value')))/
 				       Math.log(2)]);
 	    }
 	}
-	var r = Math.floor(Math.random()*4);
-        var c = Math.floor(Math.random()*4);
+	// generate a random new tile, only if tiles were actualy moved as a result of key
+	if (m) {
+	    var r = Math.floor(Math.random()*4);
+            var c = Math.floor(Math.random()*4);
     	
-	while (squares[r][c].getAttribute('value') != '1' ) {
-	    r = Math.floor(Math.random()*4);
-	    c = Math.floor(Math.random()*4);
-    	}
-    	var v1 = Math.random();
-    	if (v1 < 0.5) {
-	    squares[r][c].setAttribute('value','2');
-	    squares[r][c].setAttribute('style','fill:#eee4da');
-        } 
+	    while (squares[r][c].getAttribute('value') != '1' ) {
+	        r = Math.floor(Math.random()*4);
+	        c = Math.floor(Math.random()*4);
+       	    }
+    	    var v1 = Math.random();
+    	    if (v1 < 0.5) {
+	        squares[r][c].setAttribute('value','2');
+	        squares[r][c].setAttribute('style','fill:#eee4da');
+            }
+	}
+	//make sure text corresponds to values
+	for (var i=0; i<squares.length; i++) {
+	    for (var j=0; j<squares[i].length; j++) {
+		var sq = squares[i][j];
+		if (sq.getAttribute('value') != 1) {
+		    texts[i][j].textContent = sq.getAttribute('value');
+		    if (sq.getAttribute('value') <= 4) {
+		        texts[i][j].setAttribute('fill', '#000000');
+		    } else {
+			texts[i][j].setAttribute('fill', '#ffffff');
+		    }
+		} else {
+		    texts[i][j].textContent = '';
+		}
+	    }
+	} 
     }
 };
 
