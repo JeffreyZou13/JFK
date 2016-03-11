@@ -64,7 +64,7 @@ var initialize = function() {
 	    squares[i][j] = makeSquare(i, j);
 	}
     }
-    //console.log(squares);
+
     //The two tiles must be distinct
     var r1 = Math.floor(Math.random()*4);
     var c1 = Math.floor(Math.random()*4);
@@ -116,7 +116,7 @@ var moveUp = function() {
 							 getAttribute('value')))/
 				       Math.log(2)]);
 
-		// check rows above
+		// check rows next
 		if (i > 0) {
 		    k = i - 1;
 		    cont = true;
@@ -125,14 +125,14 @@ var moveUp = function() {
 			    stop = 20;
 			    break;
 			}
-			var above = squares[k][j];
-			if (above.getAttribute('value') != 1) {
+			var next = squares[k][j];
+			if (next.getAttribute('value') != 1) {
 			    cont = false;
-			    if (above.getAttribute('value') == d.getAttribute('value')) {
+			    if (next.getAttribute('value') == d.getAttribute('value')) {
 				collapse = true;
-				stop = parseInt(above.getAttribute('y'));
+				stop = parseInt(next.getAttribute('y'));
 			    } else {
-				stop = parseInt(above.getAttribute('y')) + 120;
+				stop = parseInt(next.getAttribute('y')) + 120;
 			    }
 			} else {
 			    k--;
@@ -141,8 +141,15 @@ var moveUp = function() {
 		}
 
 		// move duplicates
-		while (d.getAttribute('y') > stop) {
-		    d.setAttribute('y', d.getAttribute('y')-2);
+		//while (d.getAttribute('y') > stop) {
+		    //setTimeout(function(){d.setAttribute('y', d.getAttribute('y')-2);},10);
+		//}
+
+		function slide(){
+		    d.setAttribute('y', d.getAttribute('y')-0.1);
+		    if (d.getAttribute('y') > stop) {
+			setTimeout(slide, 500);
+		    }
 		}
 		// set the new values
 		if (collapse) {
@@ -183,7 +190,7 @@ var moveDown = function() {
 							 getAttribute('value')))/
 				       Math.log(2)]);
 
-		// check rows above
+		// check rows next
 		if (i < squares.length-1) {
 		    k = i + 1;
 		    cont = true;
@@ -192,14 +199,14 @@ var moveDown = function() {
 			    stop = 380;
 			    break;
 			}
-			var below = squares[k][j];
-			if (below.getAttribute('value') != '1') {
+			var next = squares[k][j];
+			if (next.getAttribute('value') != '1') {
 			    cont = false;
-			    if (below.getAttribute('value') == d.getAttribute('value')) {
+			    if (next.getAttribute('value') == d.getAttribute('value')) {
 				collapse = true;
-				stop = parseInt(below.getAttribute('y'));
+				stop = parseInt(next.getAttribute('y'));
 			    } else {
-				stop = parseInt(below.getAttribute('y')) - 120;
+				stop = parseInt(next.getAttribute('y')) - 120;
 			    }
 			} else {
 			    k++;
@@ -252,7 +259,7 @@ var moveRight = function() {
 							 getAttribute('value')))/
 				       Math.log(2)]);
 
-		// check rows above
+		// check rows next
 		if (i < squares.length-1) {
 		    k = i + 1;
 		    cont = true;
@@ -261,14 +268,14 @@ var moveRight = function() {
 			    stop = 380;
 			    break;
 			}
-			var below = squares[j][k];
-			if (below.getAttribute('value') != '1') {
+			var next = squares[j][k];
+			if (next.getAttribute('value') != '1') {
 			    cont = false;
-			    if (above.getAttribute('value') == d.getAttribute('value')) {
+			    if (next.getAttribute('value') == d.getAttribute('value')) {
 				collapse = true;
-				stop = parseInt(above.getAttribute('x'));
+				stop = parseInt(next.getAttribute('x'));
 			    } else {
-				stop = parseInt(above.getAttribute('x')) - 120;
+				stop = parseInt(next.getAttribute('x')) - 120;
 			    }
 			} else {
 			    k++;
@@ -320,7 +327,7 @@ var moveLeft = function() {
 							 getAttribute('value')))/
 				       Math.log(2)]);
 
-		// check rows above
+		// check rows next
 		if (i > 0) {
 		    k = i - 1;
 		    cont = true;
@@ -329,14 +336,14 @@ var moveLeft = function() {
 			    stop = 20;
 			    break;
 			}
-			var above = squares[j][k];
-			if (above.getAttribute('value') != '1') {
+			var next = squares[j][k];
+			if (next.getAttribute('value') != '1') {
 			    cont = false;
-			    if (above.getAttribute('value') == d.getAttribute('value')) {
+			    if (next.getAttribute('value') == d.getAttribute('value')) {
 				collapse = true;
-				stop = parseInt(above.getAttribute('x'));
+				stop = parseInt(next.getAttribute('x'));
 			    } else {
-				stop = parseInt(above.getAttribute('x')) + 120;
+				stop = parseInt(next.getAttribute('x')) + 120;
 			    }
 			} else {
 			    k--;
@@ -382,6 +389,13 @@ var move = function(e) {
 	    e.preventDefault();
 	    moveRight();
         }
+	for (var i=0; i<squares.length; i++) {
+	    for (var j=0; j<squares[i].length; j++) {
+		squares[i][j].setAttribute('style', 'fill:#'+
+				 COLOR[Math.log(parseInt(squares[i][j].getAttribute('value')))/
+				       Math.log(2)]);
+	    }
+	}
 	var r = Math.floor(Math.random()*4);
         var c = Math.floor(Math.random()*4);
     	
