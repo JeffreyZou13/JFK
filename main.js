@@ -368,18 +368,32 @@ var moveLeft = function() {
 };
 
 var move = function(e) {
-    if (e.keyCode == 38) { // up
-	e.preventDefault();
-	moveUp();
-    } else if (e.keyCode == 40) { // down
-	e.preventDefault();
-	moveDown();
-    } else if (e.keyCode == 37) { // left
-	e.preventDefault();
-	moveLeft();
-    } else if (e.keyCode == 39) { // down
-	e.preventDefault();
-	moveRight();
+    if (e.keyCode >= 37 && e.keyCode <= 41) {
+	if (e.keyCode == 38) { // up
+	    e.preventDefault();
+	    moveUp();
+        } else if (e.keyCode == 40) { // down
+	    e.preventDefault();
+	    moveDown();
+        } else if (e.keyCode == 37) { // left
+	    e.preventDefault();
+    	    moveLeft();
+        } else if (e.keyCode == 39) { // down
+	    e.preventDefault();
+	    moveRight();
+        }
+	var r = Math.floor(Math.random()*4);
+        var c = Math.floor(Math.random()*4);
+    	
+	while (squares[r][c].getAttribute('value') != '1' ) {
+	    r = Math.floor(Math.random()*4);
+	    c = Math.floor(Math.random()*4);
+    	}
+    	var v1 = Math.random();
+    	if (v1 < 0.5) {
+	    squares[r][c].setAttribute('value','2');
+	    squares[r][c].setAttribute('style','fill:#eee4da');
+        } 
     }
 };
 
