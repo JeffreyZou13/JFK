@@ -231,12 +231,76 @@ var moveDown = function() {
     }
 };
 
-var moveLeft = function() {
-    console.log("left");
+var moveRight = function() {
+    console.log("RIGHT");
 };
 
-var moveRight = function() {
-    console.log("right");
+var moveLeft = function() {
+    console.log("LEFT");
+    for (var i=0; i<squares.length; i++) {
+	for (var j=0; j<squares[i].length; j++) {
+	    if (squares[j][i].getAttribute('value') != '1') {
+		var stop = 20;
+		var collapse = false;
+		var square = squares[j][i];
+		// duplicate and reset squares
+		
+		var d = dupSquare(squares[j][i].getAttribute('value'),
+	  			  squares[j][i].getAttribute('x'),
+				  squares[j][i].getAttribute('y'));
+		squares[j][i].setAttribute('value','1');
+
+		squares[j][i].
+		    setAttribute('style', 'fill:#'+
+				 COLOR[Math.log(parseInt(squares[j][i].
+							 getAttribute('value')))/
+				       Math.log(2)]);
+
+		// check rows above
+		if (i > 0) {
+		    k = i - 1;
+		    cont = true;
+		    while (cont) {
+			if (k < 0) {
+			    stop = 20;
+			    break;
+			}
+			var above = squares[j][k];
+			if (above.getAttribute('value') != '1') {
+			    cont = false;
+			    if (above.getAttribute('value') == d.getAttribute('value')) {
+				collapse = true;
+				stop = parseInt(above.getAttribute('x'));
+			    } else {
+				stop = parseInt(above.getAttribute('x')) + 120;
+			    }
+			} else {
+			    k--;
+			}
+		    }   
+		}
+
+		// move duplicates
+		while (d.getAttribute('x') > stop) {
+		    d.setAttribute('x', d.getAttribute('x')-2);
+		}
+		// set the new values
+		if (collapse) {
+		    squares[j][(stop-20)/120].setAttribute('value', parseInt(d.getAttribute('value'))*2);
+		    squares[j][(stop-20)/120].setAttribute('style', 'fill:#'+
+				 COLOR[Math.log(parseInt(squares[(stop-20)/120][j].
+							 getAttribute('value')))/
+				       Math.log(2)]);
+		} else {
+		    squares[j][(stop-20)/120].setAttribute('value', d.getAttribute('value'));
+		    squares[j][(stop-20)/120].setAttribute('style', d.getAttribute('style'));
+		}
+		
+		// delete duplicates
+		d.parentNode.removeChild(d);
+	    }
+	}
+    }
 };
 
 var move = function(e) {
